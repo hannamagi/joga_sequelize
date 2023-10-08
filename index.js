@@ -11,7 +11,7 @@ const sequelize = new Sequelize ('mysql://root:qwerty@localhost:3306/joga_sequel
 sequelize
     .authenticate()
     .then(() => {
-        console.log('Connected to the database.');
+        console.log('Connected to db');
     })
     .catch(err=> {
         console.error('Unable to connect to the database:', err);
@@ -19,10 +19,9 @@ sequelize
 
 const articleRouter = require('./routes/article');
 app.use('/', articleRouter);
-app.use('/', articleRouter);
 
-app.get("/", (req, res) => {
-    res.json({ message: "Welcome to sequelize application." });
+
+app.use('/articles', articleRouter);
 
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000');
