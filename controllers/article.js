@@ -21,7 +21,14 @@ const getArticleBySlug = (req, res) => {
         },
         include: [{
             model: models.Author,
-        }],
+        },
+            {
+                model: models.Tags,
+                through: {
+                    model: models.ArticleTags
+                }
+            }
+        ],
     })
         .then(article => {
             console.log(article)
@@ -31,7 +38,21 @@ const getArticleBySlug = (req, res) => {
             return res.status(500).send(error.message);
         })
 }
+const getArticleByAuthor = (req,res) =>{
+    models.Article.findAll({
+        where: {
+            author_id:req.params.author_id
+        },
+    })
+        .then(article =>{
+            console.log(article)
+            return res.status(200).json({article});
+        })
+        .catch(error=>{
+            return res.status(500).send(error.message);
+        })
+}
 module.exports = {
-    getAllArticles,
-    getArticleBySlug
+    getArticleBySlug,
+    getArticleByAuthor
 };
