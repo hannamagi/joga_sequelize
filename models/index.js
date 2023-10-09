@@ -1,43 +1,24 @@
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
+const express = require('express');
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const Sequelize = require('sequelize');
-const process = require('process');
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config/config.json')[env];
-const db = {};
-
-let sequelize;
-if (config.use_env_variable) {
-    sequelize = new Sequelize(process.env[config.use_env_variable], config);
-} else {
-    sequelize = new Sequelize(config.database, config.username, config.password, config);
-}
-
-fs
-    .readdirSync(__dirname)
-    .filter(file => {
-        return (
-            file.indexOf('.') !== 0 &&
-            file !== basename &&
-            file.slice(-3) === '.js' &&
-            file.indexOf('.test.js') === -1
-        );
+const sequelize = new Sequelize('mysql://root:qwerty@localhost:3306/joga_sequelize');
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connected to db.');
     })
-    .forEach(file => {
-        const model = require(path.join(__dirname, file));
-        db[model.name] = model;
-    });
+    .catch(err => {
+        console.error('Unable to connect to the database:', err);
+    })
+const articleRouter = require('./routes/article');
+app.use('/', articleRouter);
+app.use('/article', articleRouter);
+app.use('admin/article', articleRouter);
 
-Object.keys(db).forEach(modelName => {
-    if (db[modelName].associate) {
-        db[modelName].associate(db);
-    }
-});
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-
-module.exports = db;
+const authorRouter = require('./routes/author')
+app.use('/author', authorRouter);
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+})

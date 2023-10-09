@@ -53,6 +53,7 @@ const getArticleByAuthor = (req,res) =>{
         })
 }
 module.exports = {
+    getAllArticles,
     getArticleBySlug,
-    getArticleByAuthor
+    getArticleByAuthor,
 };
