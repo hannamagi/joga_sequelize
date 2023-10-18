@@ -1,6 +1,5 @@
-// connect to database
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize ('mysql://root:qwerty@localhost:3306/joga_sequelize');
+const Sequelize = require('sequelize');
+const sequelize = new Sequelize('mysql://root:qwerty@localhost:3306/joga_sequelize');
 
 const models = require('../models');
 const getAllArticles = (req, res) => {
@@ -13,7 +12,6 @@ const getAllArticles = (req, res) => {
             return res.status(500).send(err.message);
         })
 };
-// show article by this slug
 const getArticleBySlug = (req, res) => {
     models.Article.findOne({
         where: {
