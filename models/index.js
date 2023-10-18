@@ -1,24 +1,24 @@
 const express = require('express');
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize('mysql://root:qwerty@localhost:3306/joga_sequelize');
-sequelize
-    .authenticate()
-    .then(() => {
-        console.log('Connected to db.');
-    })
-    .catch(err => {
-        console.error('Unable to connect to the database:', err);
-    })
-const articleRouter = require('./routes/article');
-app.use('/', articleRouter);
-app.use('/article', articleRouter);
-app.use('admin/article', articleRouter);
+const router = express.Router();
 
-const authorRouter = require('./routes/author')
-app.use('/author', authorRouter);
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
-})
+const Author = require('./authors');
+const Article = require('./Article');
+const Tag = require('./tags');
+const ArticleTags = require('./ArticleTags');
+
+const setupModels = (req, res, next) => {
+    req.models = {
+        Author,
+        Article,
+        Tag,
+        ArticleTags,
+    };
+    next();
+};
+
+module.exports = setupModels;
+
+module.exports.Author = Author;
+module.exports.Article = Article;
+module.exports.Tag = Tag;
+module.exports.ArticleTags = ArticleTags;

@@ -25,7 +25,7 @@ const getArticleBySlug = (req, res) => {
             {
                 model: models.Tags,
                 through: {
-                    model: models.ArticleTags
+                    model: models.ArticleTag
                 }
             }
         ],
