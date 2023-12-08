@@ -26,7 +26,7 @@ const createArticle = (req, res) => {
             <<<<<<< HEAD
             console.log(article);
             return res.status(200).json({message: "New article is added"});
-        })
+            })
         .catch(err => {
             return res.status(500).send(err.message);
         =======
